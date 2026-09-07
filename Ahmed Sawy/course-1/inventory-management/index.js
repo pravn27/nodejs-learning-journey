@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const PORT = 3001;
+require("dotenv").config();
 
 app.get("/", (req, res) => {
   res.send("Welcome to Nodejs");
@@ -26,9 +27,8 @@ app.listen(PORT, () => {
 });
 
 // connect to Mongo DB using Mongoose
-
-const connectionStr =
-  "mongodb+srv://praveensri27_db_user:FagfS5krLbdVZmnS@cluster0.5jmbikv.mongodb.net/?appName=Cluster0";
+console.log("MongoDB connect string: ", process.env.MONGODB_CONNECTION_STR);
+const connectionStr = process.env.MONGODB_CONNECTION_STR;
 
 main()
   .then(() => console.log("Connected to Mongo DB"))
