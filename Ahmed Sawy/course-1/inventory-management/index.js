@@ -4,22 +4,46 @@ const app = express();
 const PORT = 3001;
 require("dotenv").config();
 
-app.get("/", (req, res) => {
-  res.send("Welcome to Nodejs");
+app.use(express.json());
+
+// app.get("/", (req, res) => {
+//   res.send("Welcome to Nodejs");
+// });
+
+// // create new route with /about page
+// app.get("/about", (req, res) => {
+//   res.send("About Page");
+// });
+
+// // create new route with /contact page
+// app.get("/contact", (req, res) => {
+//   res.send("Contact Page");
+// });
+
+// app.get("/home", (req, res) => {
+//   res.send("Home page");
+// });
+
+const bookSchema = mongoose.Schema({
+  bookName: {
+    type: String,
+    required: true,
+  },
+  countInStock: {
+    type: Number,
+    required: true,
+  },
+});
+BookModel = mongoose.model("Book", bookSchema);
+
+app.post("/books", async (req, res) => {
+  const newBook = await BookModel.create(req.body);
+  res.status(201).json(newBook);
 });
 
-// create new route with /about page
-app.get("/about", (req, res) => {
-  res.send("About Page");
-});
-
-// create new route with /contact page
-app.get("/contact", (req, res) => {
-  res.send("Contact Page");
-});
-
-app.get("/home", (req, res) => {
-  res.send("Home page");
+app.get("/books", async (req, res) => {
+  const bookList = await BookModel.find();
+  res.status(200).send(bookList);
 });
 
 app.listen(PORT, () => {
